@@ -1,36 +1,25 @@
-// Скрипт для эффекта падающего снега
 document.addEventListener('DOMContentLoaded', function () {
-    if (typeof snowIntensity === 'undefined') {
-        console.warn('snowIntensity is undefined. Check if the variable is set correctly.');
-        return;
-    }
+    const snowflakes = document.querySelectorAll('.snow');
 
-    console.log('Snow intensity set to:', snowIntensity);
-    const totalSnowflakes = snowIntensity;
+    snowflakes.forEach(snowflake => {
+        // Случайное начальное положение по оси X
+        const startX = Math.random() * window.innerWidth;
+        snowflake.style.left = `${startX}px`;
 
-    for (let i = 0; i < totalSnowflakes; i++) {
-        createSnowflake();
-    }
+        // Случайная длительность падения и задержка
+        const fallDuration = Math.random() * 10 + 5; // От 5 до 15 секунд
+        const fallDelay = Math.random() * 5; // Задержка до 5 секунд
+        snowflake.style.animationDuration = `${fallDuration}s`;
+        snowflake.style.animationDelay = `${fallDelay}s`;
 
-    function createSnowflake() {
-        const snowflake = document.createElement('div');
-        snowflake.classList.add('snow');
-        
-        // Случайное размещение снежинки
-        snowflake.style.left = Math.random() * 100 + 'vw';
-        snowflake.style.animationDuration = Math.random() * 10 + 5 + 's'; // Скорость падения
-        snowflake.style.width = snowflake.style.height = Math.random() * 20 + 'px'; // Увеличенный размер для теста
-        snowflake.style.opacity = 1; // Установили непрозрачность на 100% для отладки
+        // Случайный размер снежинки
+        const size = Math.random() * 10 + 5; // От 5 до 15 пикселей
+        snowflake.style.width = `${size}px`;
+        snowflake.style.height = `${size}px`;
 
-        console.log('Snowflake created with styles:', snowflake.style);
-
-        // Добавление снежинки на страницу
-        document.body.appendChild(snowflake);
-
-        // Удаление снежинки после завершения анимации
-        snowflake.addEventListener('animationend', () => {
-            snowflake.remove();
-            console.log('Snowflake removed');
-        });
-    }
+        // Устанавливаем цвет снежинки
+        if (typeof snowColor !== 'undefined') {
+            snowflake.style.backgroundColor = snowColor;
+        }
+    });
 });
