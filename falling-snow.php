@@ -2,8 +2,9 @@
 /*
 Plugin Name: Falling Snow
 Description: Плагин для эффекта падающего снега на сайте.
-Version: 1.2
+Version: 1.3
 Author: Aleksey Krivoshein
+License: GPLv2 or later
 */
 
 if (!defined('ABSPATH')) {
@@ -28,7 +29,7 @@ class FallingSnowPlugin {
             'manage_options',
             'falling-snow',
             [$this, 'settings_page_content'],
-            'dashicons-snow', // Иконка для меню
+            'dashicons-snow',
             80
         );
     }
@@ -119,9 +120,10 @@ class FallingSnowPlugin {
 
     // Подключение стилей и скриптов
     public function enqueue_styles_and_scripts() {
-        if (get_option('falling_snow_enabled')) {
-            wp_enqueue_style('falling-snow-style', plugin_dir_url(__FILE__) . 'falling-snow.css');
-            wp_enqueue_script('falling-snow-script', plugin_dir_url(__FILE__) . 'falling-snow.js', [], null, true);
+        if (get_option('falling_snow_enabled') && !is_admin()) {
+            $plugin_version = '1.3';
+            wp_enqueue_style('falling-snow-style', plugin_dir_url(__FILE__) . 'falling-snow.css', [], $plugin_version);
+            wp_enqueue_script('falling-snow-script', plugin_dir_url(__FILE__) . 'falling-snow.js', [], $plugin_version, true);
 
             // Передаем параметры цвета и интенсивности в JavaScript
             $snow_color = get_option('falling_snow_color', '#ffffff');
@@ -132,7 +134,7 @@ class FallingSnowPlugin {
 
     // Добавление HTML для снежинок в footer
     public function add_snowflakes() {
-        if (get_option('falling_snow_enabled')) {
+        if (get_option('falling_snow_enabled') && !is_admin()) {
             echo '<div id="snowflakes-container"></div>';
         }
     }
