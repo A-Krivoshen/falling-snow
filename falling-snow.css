@@ -14,7 +14,6 @@
   top: -10px;
   width: 10px;
   height: 10px;
-  background: white; /* Этот цвет будет изменен через JavaScript */
   border-radius: 50%;
   opacity: 0.8;
   animation: fall linear infinite;

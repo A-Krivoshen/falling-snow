@@ -2,7 +2,7 @@
 /*
 Plugin Name: Falling Snow
 Description: Плагин для эффекта падающего снега на сайте.
-Version: 1.1
+Version: 1.2
 Author: Aleksey Krivoshein
 */
 
@@ -55,6 +55,9 @@ class FallingSnowPlugin {
         register_setting('falling_snow_settings', 'falling_snow_color', [
             'default' => '#ffffff',
         ]);
+        register_setting('falling_snow_settings', 'falling_snow_intensity', [
+            'default' => 50,
+        ]);
 
         add_settings_section(
             'falling_snow_main_section',
@@ -78,6 +81,14 @@ class FallingSnowPlugin {
             'falling-snow',
             'falling_snow_main_section'
         );
+
+        add_settings_field(
+            'falling_snow_intensity',
+            'Интенсивность снега',
+            [$this, 'intensity_field_callback'],
+            'falling-snow',
+            'falling_snow_main_section'
+        );
     }
 
     // Поле включения эффекта
@@ -97,26 +108,32 @@ class FallingSnowPlugin {
         <?php
     }
 
+    // Поле настройки интенсивности снега
+    public function intensity_field_callback() {
+        $intensity = get_option('falling_snow_intensity', 50);
+        ?>
+        <input type="number" name="falling_snow_intensity" value="<?php echo esc_attr($intensity); ?>" min="10" max="200" />
+        <p class="description">Выберите интенсивность снега (10-200).</p>
+        <?php
+    }
+
     // Подключение стилей и скриптов
     public function enqueue_styles_and_scripts() {
         if (get_option('falling_snow_enabled')) {
             wp_enqueue_style('falling-snow-style', plugin_dir_url(__FILE__) . 'falling-snow.css');
             wp_enqueue_script('falling-snow-script', plugin_dir_url(__FILE__) . 'falling-snow.js', [], null, true);
 
-            // Передаем цвет снежинок в JavaScript
+            // Передаем параметры цвета и интенсивности в JavaScript
             $snow_color = get_option('falling_snow_color', '#ffffff');
-            wp_add_inline_script('falling-snow-script', 'var snowColor = "' . esc_js($snow_color) . '";', 'before');
+            $snow_intensity = get_option('falling_snow_intensity', 50);
+            wp_add_inline_script('falling-snow-script', 'var snowColor = "' . esc_js($snow_color) . '"; var snowIntensity = ' . esc_js($snow_intensity) . ';', 'before');
         }
     }
 
     // Добавление HTML для снежинок в footer
     public function add_snowflakes() {
         if (get_option('falling_snow_enabled')) {
-            echo '<div id="snowflakes-container">';
-            for ($i = 0; $i < 100; $i++) {
-                echo '<div class="snow"></div>';
-            }
-            echo '</div>';
+            echo '<div id="snowflakes-container"></div>';
         }
     }
 }

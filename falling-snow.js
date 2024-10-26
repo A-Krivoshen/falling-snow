@@ -1,7 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const snowflakes = document.querySelectorAll('.snow');
+    if (typeof snowColor === 'undefined' || typeof snowIntensity === 'undefined') {
+        console.warn('Snow color or intensity is undefined. Check plugin settings.');
+        return;
+    }
 
-    snowflakes.forEach(snowflake => {
+    const container = document.getElementById('snowflakes-container');
+
+    for (let i = 0; i < snowIntensity; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snow');
+
         // Случайное начальное положение по оси X
         const startX = Math.random() * window.innerWidth;
         snowflake.style.left = `${startX}px`;
@@ -18,8 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
         snowflake.style.height = `${size}px`;
 
         // Устанавливаем цвет снежинки
-        if (typeof snowColor !== 'undefined') {
-            snowflake.style.backgroundColor = snowColor;
-        }
-    });
+        snowflake.style.backgroundColor = snowColor;
+
+        container.appendChild(snowflake);
+    }
 });
