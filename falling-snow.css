@@ -1,0 +1,30 @@
+/* Основные стили для фона и эффекта снега */
+body {
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  overflow: hidden;
+  filter: drop-shadow(0 0 10px white);
+  position: relative; /* Для абсолютного позиционирования снежинок */
+}
+
+/* Снежинка */
+.snow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  animation: fall linear infinite;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Анимация падения */
+@keyframes fall {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
