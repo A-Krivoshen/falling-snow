@@ -3,7 +3,7 @@
 Plugin Name: Falling Snow
 Description: Плагин для эффекта падающего снега на сайте с возможностью настройки через админку.
 Version: 1.0
-Author: Your Name
+Author: Aleksey Krivoshein
 */
 
 if (!defined('ABSPATH')) {
