@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Falling Snow
-Description: Плагин для эффекта падающего снега на сайте с возможностью настройки через админку.
-Version: 1.0
+Description: Плагин для эффекта падающего снега на сайте с настройками через админку.
+Version: 1.1
 Author: Aleksey Krivoshein
 */
 
@@ -20,7 +20,7 @@ class FallingSnow {
         add_action('wp_head', [$this, 'insert_snow_effect']);
     }
 
-    // Создание страницы админки
+    // Создание страницы настроек в админке
     public function create_admin_page() {
         add_menu_page(
             'Falling Snow Settings',
@@ -97,11 +97,13 @@ class FallingSnow {
 
     // Подключение стилей и скриптов
     public function enqueue_scripts() {
-        wp_enqueue_style('falling-snow-style', plugin_dir_url(__FILE__) . 'falling-snow.css');
-        wp_enqueue_script('falling-snow-script', plugin_dir_url(__FILE__) . 'falling-snow.js', [], null, true);
+        if (get_option('falling_snow_enabled')) {
+            wp_enqueue_style('falling-snow-style', plugin_dir_url(__FILE__) . 'falling-snow.css');
+            wp_enqueue_script('falling-snow-script', plugin_dir_url(__FILE__) . 'falling-snow.js', [], null, true);
+        }
     }
 
-    // Вставка скрипта снега в `wp_head`
+    // Вставка переменной интенсивности в `wp_head`
     public function insert_snow_effect() {
         if (get_option('falling_snow_enabled')) {
             $intensity = get_option('falling_snow_intensity', 50);

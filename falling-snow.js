@@ -1,4 +1,4 @@
-// Скрипт для эффекта падающего снега с использованием JavaScript
+// Скрипт для эффекта падающего снега
 document.addEventListener('DOMContentLoaded', function () {
     if (typeof snowIntensity === 'undefined') {
         return;
